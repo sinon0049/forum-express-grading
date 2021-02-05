@@ -43,7 +43,7 @@ const adminController = {
         return res.render('admin/create', { restaurant: restaurant } )
       })
     },
-    
+
     putRestaurant: (req, res) => {
       if(!req.body.name){
         req.flash('error_messages', "name didn't exist")
@@ -62,6 +62,16 @@ const adminController = {
             req.flash('success_messages', 'restaurant was successfully to update')
             res.redirect('/admin/restaurants')
           })
+        })
+    },
+
+    deleteRestaurant: (req, res) => {
+      return Restaurant.findByPk(req.params.id)
+        .then((restaurant) => {
+          restaurant.destroy()
+            .then((restaurant) => {
+              res.redirect('/admin/restaurants')
+            })
         })
     }
 }
