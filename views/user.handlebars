@@ -1,0 +1,13 @@
+<div class="row">
+    <img class="img-responsive center-block" src="{{currentUser.image}}" style="width: 480px;margin-bottom: 25px;">
+
+    <div class="col-md-4 ml-5">
+        <h1>{{currentUser.name}}</h1>
+        <p>{{currentUser.email}}</p>
+        {{#if isCurrentUser}}
+            <a class="btn btn-primary" href="/users/{{currentUser.id}}/edit">edit</a>
+        {{/if}}
+    </div>
+    
+    
+</div>
