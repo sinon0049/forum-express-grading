@@ -16,8 +16,8 @@ module.exports = {
     Array.from({ length: 20 }).map((d, i) =>
     ({
       text: faker.lorem.sentence(),
-      UserId: Math.ceil(Math.random() * 3),
-      RestaurantId: Math.ceil(Math.random() * 50),
+      UserId: Math.ceil(Math.random() * 3) * 10 + 1,
+      RestaurantId: Math.ceil(Math.random() * 50) * 10 + 1,
       createdAt: new Date(),
       updatedAt: new Date()
     })
