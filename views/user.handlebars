@@ -1,13 +1,25 @@
 <div class="row">
-    <img class="img-responsive center-block" src="{{currentUser.image}}" style="width: 480px;margin-bottom: 25px;">
+    <img class="img-responsive center-block" src="{{currentUser.image}}" alt="..." style="width: 480px;margin-bottom: 25px; outline: 1px solid #dcdcdc;">
 
     <div class="col-md-4 ml-5">
         <h1>{{currentUser.name}}</h1>
         <p>{{currentUser.email}}</p>
+        <p>{{amount}} 已評論餐廳</p>
         {{#if isCurrentUser}}
             <a class="btn btn-primary" href="/users/{{currentUser.id}}/edit">edit</a>
         {{/if}}
     </div>
-    
+
+    <div class="ml-5 mt-5" style="outline: 1px solid #dcdcdc;">
+        <p class="mx-2">{{amount}} 已評論餐廳</p>
+        <br>
+        <div class="d-flex flex-row">
+            {{#each commentedRestaurants}}
+                <div class="mx-2">
+                    <a href="/restaurants/{{this.Restaurant.dataValues.id}}"><img src="{{this.Restaurant.dataValues.image}}" alt="..." style="width: 100px;margin-bottom: 25px;"></a>
+                </div>
+            {{/each}}
+        </div>
+    </div>
     
 </div>
