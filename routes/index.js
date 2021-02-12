@@ -43,11 +43,11 @@ module.exports = (app, passport) => {
   app.put('/admin/categories/:id', authenticatedAdmin, categoryController.putCategory)
   app.delete('/admin/categories/:id', authenticatedAdmin, categoryController.deleteCategory)
   app.get('/restaurants/feeds', authenticated, restController.getFeeds)
+  app.get('/restaurant/:id/dashboard', authenticated, restController.getDashboard)
   app.get('/restaurants/:id', authenticated, restController.getRestaurant)
   app.post('/comments', authenticated, commentController.postComment)
   app.delete('/comments/:id', authenticatedAdmin, commentController.deleteComment)
   app.get('/users/:id/edit', authenticated, userController.editUser)
   app.get('/users/:id', authenticated, userController.getUser)
   app.put('/users/:id', authenticated, upload.single('image'), userController.putUser)
-  app.get('/restaurant/dashboard/:id', authenticated, restController.getDashboard)
 }
