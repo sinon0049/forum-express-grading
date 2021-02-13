@@ -1,3 +1,4 @@
+const { image } = require('faker')
 const db = require('../models')
 const Restaurant = db.Restaurant
 const Category = db.Category
@@ -105,5 +106,21 @@ const restController = {
           })
         })
     },
+
+    getTopRestaurants: (req, res) => {
+      return Restaurant.findAll({ 
+        include: [{ model: User, as: 'FavoritedUsers'}]
+      }).then((restaurant) => {
+        const data = restaurant.map(r => ({
+          name: r.dataValues.name,
+          id: r.dataValues.id,
+          image: r.dataValues.image,
+          description: r.dataValues.description,
+          favoriteCounts: r.FavoritedUsers.length,
+          isFavorited: req.user.FavoritedRestaurants.map(d => d.id).includes(r.dataValues.id),
+        })).sort((a,b) => b.favoriteCounts - a.favoriteCounts).slice(0, 10)
+        res.render('topRestaurants', { data })
+      })
+    }
 }
 module.exports = restController
