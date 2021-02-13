@@ -92,6 +92,6 @@ const restController = {
             commentAmount: restaurant.toJSON().Comments.length
           })
         })
-    }
+    },
 }
 module.exports = restController
