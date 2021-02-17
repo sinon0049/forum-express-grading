@@ -2,9 +2,7 @@ const db = require('../models')
 const Restaurant = db.Restaurant
 const User = db.User
 const Category = db.Category
-const fs = require('fs')
-const imgur = require('imgur-node-api')
-const IMGUR_CLIENT_ID = process.env.IMGUR_CLIENT_ID
+
 
 const categoryService = {
     getCategories: (req, res, callback) => {
@@ -19,6 +17,18 @@ const categoryService = {
                     callback({ categories })
                 }
             })
+    },
+
+    postCategory: (req, res, callback) => {
+        if(!req.body.name) {
+            callback({status: 'error', message: "name didn't exist"})
+        } else {
+            return Category.create({
+                name: req.body.name
+            }).then(() => {
+                callback({status: 'success', message: "category created successfully"})
+            })
+        }
     },
 }
 
