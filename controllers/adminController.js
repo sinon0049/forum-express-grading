@@ -3,7 +3,7 @@ const Restaurant = db.Restaurant
 const User = db.User
 const Category = db.Category
 const fs = require('fs')
-const imgur = require('imgur-node-api')
+const imgur = require('imgur')
 const IMGUR_CLIENT_ID = process.env.IMGUR_CLIENT_ID
 const adminService = require('../services/adminService')
 
@@ -31,21 +31,22 @@ const adminController = {
     
       const { file } = req
       if (file) {
-        imgur.setClientID(IMGUR_CLIENT_ID);
-        imgur.upload(file.path, (err, img) => {
-          return Restaurant.create({
-            name: req.body.name,
-            tel: req.body.tel,
-            address: req.body.address,
-            opening_hours: req.body.opening_hours,
-            description: req.body.description,
-            image: file ? img.data.link : null,
-            CategoryId: req.body.categoryId
-          }).then((restaurant) => {
-            req.flash('success_messages', 'restaurant was successfully created')
-            return res.redirect('/admin/restaurants')
+        imgur.setClientId(IMGUR_CLIENT_ID);
+        imgur.uploadFile(file.path)
+          .then((file) => {
+            return Restaurant.create({
+              name: req.body.name,
+              tel: req.body.tel,
+              address: req.body.address,
+              opening_hours: req.body.opening_hours,
+              description: req.body.description,
+              image: file ? file.data.link : null,
+              CategoryId: req.body.categoryId
+            }).then((restaurant) => {
+              req.flash('success_messages', 'restaurant was successfully created')
+              return res.redirect('/admin/restaurants')
+            })
           })
-        })
       }
       else {
         return Restaurant.create({
@@ -66,7 +67,7 @@ const adminController = {
     getRestaurant: (req, res) => {
       adminService.getRestaurant(req, res, (data => {
         res.render('admin/restaurant', {
-          data: data.toJSON()
+          data: data.restaurant.toJSON()
         })
       }))
     },
@@ -93,25 +94,22 @@ const adminController = {
     
       const { file } = req
       if (file) {
-        imgur.setClientID(IMGUR_CLIENT_ID);
-        imgur.upload(file.path, (err, img) => {
-          return Restaurant.findByPk(req.params.id)
-            .then((restaurant) => {
-              restaurant.update({
-                name: req.body.name,
-                tel: req.body.tel,
-                address: req.body.address,
-                opening_hours: req.body.opening_hours,
-                description: req.body.description,
-                image: file ? img.data.link : restaurant.image,
-                CategoryId: req.body.categoryId
-              })
-              .then((restaurant) => {
-                req.flash('success_messages', 'restaurant was successfully to update')
-                res.redirect('/admin/restaurants')
-              })
+        imgur.setClientId(IMGUR_CLIENT_ID);
+        imgur.uploadFile(file.path)
+          .then((file) => {
+            return Restaurant.create({
+              name: req.body.name,
+              tel: req.body.tel,
+              address: req.body.address,
+              opening_hours: req.body.opening_hours,
+              description: req.body.description,
+              image: file ? file.data.link : restaurant.image,
+              CategoryId: req.body.categoryId
+            }).then((restaurant) => {
+              req.flash('success_messages', 'restaurant was successfully created')
+              return res.redirect('/admin/restaurants')
             })
-        })
+          })
       }
       else {
         return Restaurant.findByPk(req.params.id)
